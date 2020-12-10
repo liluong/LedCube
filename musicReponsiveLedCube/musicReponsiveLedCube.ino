@@ -4,9 +4,9 @@
 #define SAMPLES 128 //must be a power of 2
 #define SAMPLING_FREQUENCY 1000 //Hz must be less than 10'000 due to ADC
 
-#define LOW_FREQ ((SAMPLES/2)-1)/3)
-#define MID_FREQ ((SAMPLES/2)-1)/3) * 2
-#define HIGH_FREQ (SAMPLES/2)
+#define LOW_FREQ 21
+#define MID_FREQ 42
+#define HIGH_FREQ 64
 
 arduinoFFT FFT = arduinoFFT();
 
@@ -56,13 +56,13 @@ void loop() {
     vReal[i] = sqrt(vReal[i] * vReal[i] + vImag[i] * vImag[i]);
 
     if (vReal[i] == 0) {
-      noSound();
-    } else if (vReal[i] <= LOWFREQ) {
-      lowFreq()
-    } else if (vReal[i] <= MIDFREQ) {
-      midFreq()
-    } else if (vReal[i] <= HIGHFREQ) {
-      highFreq()
+      noFreq();
+    } else if (vReal[i] <= LOW_FREQ) {
+      lowFreq();
+    } else if (vReal[i] <= MID_FREQ) {
+      midFreq();
+    } else if (vReal[i] <= HIGH_FREQ) {
+      highFreq();
     }
   }
 }
@@ -75,8 +75,11 @@ void visualizeCube() {
 void noFreq() {
   for (int i = 0; i < 5; i++) {
     digitalWrite(rows[i], HIGH);
+    for (int i = 0; i < 25; i++) {
+    digitalWrite(columns[i], LOW);
   }
-  delay(200);
+  }
+  
 }
 
 
@@ -90,7 +93,6 @@ void lowFreq() {
     digitalWrite(columns[i], LOW);
   }
   digitalWrite(columns[12], HIGH);
-  delay(200);
 }
 
 void midFreq() {
@@ -111,8 +113,6 @@ void midFreq() {
   digitalWrite(columns[16], HIGH);
   digitalWrite(columns[17], HIGH);
   digitalWrite(columns[18], HIGH);
-
-  delay(200);
 }
 
 void highFreq() {
@@ -124,5 +124,4 @@ void highFreq() {
   for (int i = 0; i < 25; i++) {
     digitalWrite(columns[i], HIGH);
   }
-  delay(200);
 }
